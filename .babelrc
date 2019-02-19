@@ -4,10 +4,16 @@
       "@babel/preset-env",
       {
         "targets": {
-          "browsers": ["last 2 versions"]
+          "browsers": [
+            "last 2 versions"
+          ]
         }
       }
     ]
   ],
-  "plugins": ["@babel/plugin-transform-runtime", "transform-async-to-generator"]
+  "plugins": [
+    "@babel/plugin-transform-runtime",    //运行环境
+    "transform-async-to-generator",       //支持await async
+    "@babel/plugin-proposal-class-properties"   //class支持箭头函数
+  ]
 }
