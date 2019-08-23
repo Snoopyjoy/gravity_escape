@@ -1,0 +1,38 @@
+{"frames": {
+
+"daojujindutiao.png":
+{
+	"frame": {"x":1,"y":30,"w":280,"h":20},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":280,"h":20},
+	"sourceSize": {"w":280,"h":20}
+},
+"daojujindutiaodi.png":
+{
+	"frame": {"x":1,"y":1,"w":284,"h":27},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":284,"h":27},
+	"sourceSize": {"w":284,"h":27}
+},
+"loadingdi2.png":
+{
+	"frame": {"x":287,"y":1,"w":100,"h":178},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":178},
+	"sourceSize": {"w":100,"h":178}
+}},
+"animations": {
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "loading.png",
+	"format": "RGBA8888",
+	"size": {"w":466,"h":102},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:221c05954ea4d288ba7ffe2dddf7d3e5:e361c74c77f06ba65aeab81bbb5af49a:5294b8b30e478db5089d68a09bebcee6$"
+}
+}

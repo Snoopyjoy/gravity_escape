@@ -1,7 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+// const CompressionPlugin = require('compression-webpack-plugin');
 const pathsToClean = [
     'dist',
 ];
@@ -13,7 +14,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'umd',
     },
-    devtool:'null',
+    devtool: 'null',
     module: {
         rules: [{
             test: /(\.js)$/,
@@ -28,13 +29,13 @@ module.exports = {
             ],
         },
         {
-            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-            include: [path.resolve(__dirname, 'static'), path.resolve(__dirname, 'src')],
+            test: /\.(png|jpe?g|gif|json|svg)(\?.*)?$/,
+            include: [path.resolve(__dirname, 'src')],
             use: 'url-loader?limit=1024&name=[name].[hash].[ext]&outputPath=img/&publicPath=/img/',
         },
         {
             test: /(\.css)$/,
-            include: [path.resolve(__dirname, 'static'), path.resolve(__dirname, 'src')],
+            include: [path.resolve(__dirname, 'src')],
             use: ['style-loader', 'css-loader'],
         },
         ],
@@ -59,13 +60,16 @@ module.exports = {
                 minifyURLs: true,
             },
         }),
-        new CompressionPlugin({
-            filename: '[path].gz[query]',
-            algorithm: 'gzip',
-            test: new RegExp('\\.(js|css)$'),
-            threshold: 50240,
-            minRatio: 0.8
-        }),
+        new CopyPlugin([
+            { from: 'res', to: 'res' },
+        ]),
+        // new CompressionPlugin({
+        //     filename: '[path].gz[query]',
+        //     algorithm: 'gzip',
+        //     test: new RegExp('\\.(js|css)$'),
+        //     threshold: 50240,
+        //     minRatio: 0.8,
+        // }),
     ],
     mode: 'production',
 };

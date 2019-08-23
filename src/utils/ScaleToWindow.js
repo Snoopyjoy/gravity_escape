@@ -35,7 +35,7 @@ function scaleToWindow(canvas, backgroundColor) {
     let margin;
 
     if (center === 'horizontally') {
-        margin = (window.innerWidth - (canvas.offsetWidth * scale)) / 2;
+        margin = ((window.innerWidth - (canvas.offsetWidth * scale)) / 2) >> 0;
         canvas.style.marginTop = `${0}px`;
         canvas.style.marginBottom = `${0}px`;
         canvas.style.marginLeft = `${margin}px`;
@@ -44,7 +44,7 @@ function scaleToWindow(canvas, backgroundColor) {
 
     // Center vertically (for wide canvases)
     if (center === 'vertically') {
-        margin = (window.innerHeight - (canvas.offsetHeight * scale)) / 2;
+        margin = ((window.innerHeight - (canvas.offsetHeight * scale)) / 2) >> 0;
         canvas.style.marginTop = `${margin}px`;
         canvas.style.marginBottom = `${margin}px`;
         canvas.style.marginLeft = `${0}px`;
