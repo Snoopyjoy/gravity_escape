@@ -2,7 +2,7 @@
  * @Author: hexiaoliang
  * @Date: 2019-08-23 17:25:31
  * @Last Modified by: hexiaoliang
- * @Last Modified time: 2019-08-23 18:55:59
+ * @Last Modified time: 2019-08-27 17:14:15
  */
 import * as PIXI from 'pixi.js';
 const PROCESS = Symbol('process');
@@ -17,9 +17,12 @@ class ProcessBar extends PIXI.Container {
 
         if (baseData.x) base.x = baseData.x;
         if (baseData.y) base.y = baseData.y;
+        if (baseData.width) base.width = baseData.width;
         if (barData.x) bar.x = barData.x;
         if (barData.y) bar.y = barData.y;
-        bar.scale = new PIXI.Point(0, 1);
+        this.maxWidth = barData.width || bar.width;
+        bar.width = 0;
+        this.base = base;
         this.bar = bar;
         this.addChild(base, bar);
         this[PROCESS] = 0;
@@ -30,11 +33,17 @@ class ProcessBar extends PIXI.Container {
         val = val < 0 ? 0 : val;
         val = val > 1 ? 1 : val;
         this[PROCESS] = val;
-        this.bar.scale = new PIXI.Point(val, 1);
+        this.bar.width = (val * this.maxWidth) >> 0;
     }
 
     get process() {
         return this[PROCESS];
+    }
+
+    destroy() {
+        this.base.destroy();
+        this.bar.destroy();
+        super.destroy();
     }
 }
 

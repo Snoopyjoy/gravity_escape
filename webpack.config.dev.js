@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 // const CompressionPlugin = require('compression-webpack-plugin');
@@ -51,6 +52,9 @@ module.exports = {
     },
     // 插件
     plugins: [
+        new webpack.DefinePlugin({
+            IS_DEV: JSON.stringify(true),
+        }),
         new CleanWebpackPlugin(pathsToClean),
         new HtmlWebpackPlugin({
             hash: true,

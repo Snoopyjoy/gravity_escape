@@ -6,8 +6,8 @@
  */
 import * as axios from 'axios';
 
-//'http://23u757033f.zicp.vip:40360/api'
-function startRequest(){
+// 'http://23u757033f.zicp.vip:40360/api'
+function startRequest() {
     axios.post('http://172.10.150.69:6303/api', {
         method: 'user.login',
         data: { user_id: '1001', token: 'string', uuid: 'string', app_resource: '0', game: '2' },
@@ -19,5 +19,5 @@ function startRequest(){
 }
 
 export {
-    startRequest
+    startRequest,
 };

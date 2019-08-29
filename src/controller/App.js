@@ -5,42 +5,36 @@
  * @version 0.0.1
  */
 
-import * as LayerManager from './LayerManager';
-import * as SceneManager from './SceneManager';
+import LayerManager from '../view/LayerManager';
+import SceneManager from './SceneManager';
+import ResourceManager from '../model/ResourceManager';
 import * as PIXI from 'pixi.js';
-import { Config } from '../config/Config';
-import AppData from '../model/AppData';
+import Config from '../config/Config';
+import AppModel from '../model/AppModel';
 
 let instance;
 
 class App {
     constructor(app) {
-        LayerManager.init(app, Config.layers);
-        SceneManager.init(app);
-        this.sceneManager = SceneManager;
-        this.layerManager = LayerManager;
+        this.sceneManager = SceneManager.getIns();
+        this.layerManager = LayerManager.getIns(app, Config.layers);
+        this.resourceManager = ResourceManager.getIns();
         this.app = app;
-        this.currentScene = null;
-        this.sceneMap = {};
-        this.loader = new PIXI.Loader();
-        this.data = new AppData();
+        this.data = AppModel.getIns();
     }
 
     changeScene(scene) {
-        SceneManager.changeScene(scene);
+        this.sceneManager.changeScene(scene);
+    }
+
+    static getIns(app = null) {
+        if (!instance) {
+            if (app === null) throw new Error('App instance need app!');
+            instance = new App(app);
+        }
+
+        return instance;
     }
 }
 
-function init(app) {
-    if (!instance) {
-        instance = new App(app);
-    }
-
-    return instance;
-}
-
-function getApp() {
-    return instance;
-}
-
-export { init, getApp };
+export default { getIns: App.getIns };

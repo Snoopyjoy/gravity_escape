@@ -1,6 +1,9 @@
 import * as PIXI from 'pixi.js';
 import Resources from '../config/Resources.json';
 
+const VIEW = Symbol('view');
+const MODEL = Symbol('model');
+
 class Scene {
     constructor({ loader, name }) {
         if (!loader) {
@@ -8,11 +11,13 @@ class Scene {
         }
         this.loader = loader;
         this.loaded = false;
-        this.resources = Resources[name] || [];
-        this.resources.forEach((resource, index) => {
+        const resources = Resources[name] || [];
+
+        resources.forEach((resource, index) => {
             this.loader.add(`res_${index}`, resource);
         });
-        this._view = null;
+        this[MODEL] = new this.modelClass();
+        this[VIEW] = new this.viewClass(loader, this.model);
     }
 
     startUp() {
@@ -42,15 +47,26 @@ class Scene {
     }
 
     get view() {
+        return this[VIEW];
+    }
+
+    get model() {
+        return this[MODEL];
+    }
+
+    get viewClass() {
         throw new Error('view should be overridden');
     }
 
-    get data() {
+    get modelClass() {
         throw new Error('data should be overridden');
     }
 
-    dispose() {
-        throw new Error('dispose should be overridden');
+    destroy() {
+        this.view.destroy();
+        this.model.destroy();
+        this[VIEW] = null;
+        this[MODEL] = null;
     }
 }
 

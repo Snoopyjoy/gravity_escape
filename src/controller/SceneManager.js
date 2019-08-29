@@ -4,30 +4,43 @@
  * @author 何小亮<hel13140302@126.com> {@link https://github.hxl2lgy.top}
  * @version 0.0.1
  */
-import * as loading from '../scene/loading/index';
-const sceneMap = new Map();
-let currentScene = null;
+import LoadingModule from '../scene/loading/index';
+const CURRENT_SCENE = Symbol('SceneManager#currentScene');
+let instance;
 
-function init() {
-    sceneMap.set(loading.name, loading.Ref);
-}
-
-function changeScene(scene) {
-    if (currentScene) {
-        currentScene.dispose();
+class SceneManager {
+    constructor() {
+        this.sceneMap = new Map();
+        this.sceneMap.set(LoadingModule.name, LoadingModule);
+        this[CURRENT_SCENE] = null;
     }
-    const SceneRef = sceneMap.get(scene);
 
-    if (!SceneRef) throw new Error(`scene ${scene} is not exist`);
+    static getIns() {
+        if (!instance) {
+            instance = new SceneManager();
+        }
 
-    currentScene = new SceneRef({ name: scene });
-    currentScene.startUp();
+        return instance;
+    }
 
-    return currentScene;
+    get currentScene() {
+        return this[CURRENT_SCENE];
+    }
+
+    changeScene(scene) {
+        if (this.currentScene) {
+            this[CURRENT_SCENE].destroy();
+            this[CURRENT_SCENE] = null;
+        }
+        const SceneRef = this.sceneMap.get(scene);
+
+        if (!SceneRef) throw new Error(`scene ${scene} is not exist`);
+
+        this[CURRENT_SCENE] = new SceneRef({ name: scene });
+        this[CURRENT_SCENE].startUp();
+
+        return this[CURRENT_SCENE];
+    }
 }
 
-function getCurrentScene() {
-    return currentScene;
-}
-
-export { init, changeScene, getCurrentScene };
+export default { getIns: SceneManager.getIns };

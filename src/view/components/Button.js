@@ -2,7 +2,7 @@
  * @Author: hexiaoliang
  * @Date: 2019-08-22 22:06:11
  * @Last Modified by: hexiaoliang
- * @Last Modified time: 2019-08-23 11:13:37
+ * @Last Modified time: 2019-08-27 17:13:07
  */
 
 import * as PIXI from 'pixi.js';
@@ -14,15 +14,46 @@ const onButtonDown = Symbol('onButtonDown');
 const onButtonUp = Symbol('onButtonUp');
 const onButtonOver = Symbol('onButtonOver');
 const onButtonOut = Symbol('onButtonOut');
+const listen = Symbol('listen');
+const removeListen = Symbol('removeListen');
+const disabled = Symbol('disabled');
 
 class Button extends PIXI.Sprite {
-    constructor(textureNormal, textureOver, textureDown) {
+    constructor(textureNormal, textureOver, textureDown, textureDisable) {
         super(textureNormal);
         this.textureNormal = textureNormal;
         this.textureOver = textureOver || textureNormal;
         this.textureDown = textureDown || textureNormal;
+        this.textureDisable = textureDisable || textureNormal;
         this.buttonMode = true;
         this.interactive = true;
+        this[disabled] = true;
+        this[listen]();
+    }
+
+    set disabled(val) {
+        if (val) {
+            this[isDown] = false;
+            this[isOver] = false;
+            this.texture = this.textureDisable;
+            if (!this[disabled]) this[removeListen]();
+        }
+        else {
+            this.texture = this.textureNormal;
+            if (this[disabled]) this[listen]();
+        }
+        this[disabled] = Boolean(val);
+    }
+
+    get disabled() {
+        return this[disabled];
+    }
+
+    onClick() {
+        return this;
+    }
+
+    [listen]() {
         this.on('pointerdown', this[onButtonDown])
             .on('pointerup', this[onButtonUp])
             .on('pointerupoutside', this[onButtonUp])
@@ -30,8 +61,12 @@ class Button extends PIXI.Sprite {
             .on('pointerout', this[onButtonOut]);
     }
 
-    onClick() {
-        return this;
+    [removeListen]() {
+        this.off('pointerdown', this[onButtonDown])
+            .off('pointerup', this[onButtonUp])
+            .off('pointerupoutside', this[onButtonUp])
+            .off('pointerover', this[onButtonOver])
+            .off('pointerout', this[onButtonOut]);
     }
 
     [onButtonDown](event) {
@@ -68,12 +103,9 @@ class Button extends PIXI.Sprite {
         this.texture = this.textureNormal;
     }
 
-    dispose() {
-        this.off('pointerdown', this[onButtonDown])
-            .off('pointerup', this[onButtonUp])
-            .off('pointerupoutside', this[onButtonUp])
-            .off('pointerover', this[onButtonOver])
-            .off('pointerout', this[onButtonOut]);
+    destroy() {
+        this.removeAllListeners();
+        super.destroy();
     }
 }
 export default Button;

@@ -4,14 +4,15 @@
  * @author 何小亮<hel13140302@126.com>
  * @version 0.0.1
  */
-import './css/normalize.css';
-import './css/style.css';
+import './view/css/normalize.css';
+import './view/css/style.css';
 import * as PIXI from 'pixi.js';
 import { scaleToWindow } from './utils/ScaleToWindow';
 import { getWindowSize } from './utils/DeviceInfo';
-import { Config } from './config/Config';
-import * as App from './controller/App';
-import { Consts } from './config/Consts';
+import Config from './config/Config';
+import App from './controller/App';
+import { Consts } from './model/Consts';
+import Fps from './utils/Fps';
 
 const windowSize = getWindowSize();
 const windowWidth = windowSize.width;
@@ -26,9 +27,14 @@ const app = new PIXI.Application({ width: stageW, height: stageH, backgroundColo
 document.body.appendChild(app.view);
 scaleToWindow(app.view);
 
-const gameApp = App.init(app);
+const gameApp = App.getIns(app);
 
 gameApp.changeScene(Consts.SCENE_LOADING);
+
+// eslint-disable-next-line no-undef
+if (IS_DEV) {
+    Fps.create();
+}
 // PIXI.loader
 //     .add(ximg)
 //     .load(setup);
