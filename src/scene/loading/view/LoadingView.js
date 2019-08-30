@@ -31,7 +31,8 @@ class LoadingView extends PIXI.utils.EventEmitter {
             y: 2,
         });
         const procPos = new ViewPosition(ViewPosition.PositionTypes.local,
-            ViewPosition.AlignTypes.center, ViewPosition.AlignTypes.center
+            ViewPosition.AlignTypes.center, ViewPosition.AlignTypes.center,
+            0, 0, '50%'
         );
 
         const bg = new PIXI.Sprite(sheet.textures['loadingdi2.png']);
@@ -56,6 +57,10 @@ class LoadingView extends PIXI.utils.EventEmitter {
             this.layerManager.addToLayer({ target: hdBg, layer: Consts.LAYER_GAME, pos: bgPos, index: 1 });
             this.removeChild('bg');
         });
+
+        // setInterval(function () {
+        //     processBar.process += 0.1;
+        // }, 1000);
     }
 
     removeChild(childName) {

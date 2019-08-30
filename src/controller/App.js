@@ -7,7 +7,7 @@
 
 import LayerManager from '../view/LayerManager';
 import SceneManager from './SceneManager';
-import ResourceManager from '../model/ResourceManager';
+import ProcessManager from '../model/ProcessManager';
 import * as PIXI from 'pixi.js';
 import Config from '../config/Config';
 import AppModel from '../model/AppModel';
@@ -18,7 +18,7 @@ class App {
     constructor(app) {
         this.sceneManager = SceneManager.getIns();
         this.layerManager = LayerManager.getIns(app, Config.layers);
-        this.resourceManager = ResourceManager.getIns();
+        this.processManager = ProcessManager.getIns();
         this.app = app;
         this.data = AppModel.getIns();
     }

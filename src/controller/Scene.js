@@ -16,6 +16,11 @@ class Scene {
         resources.forEach((resource, index) => {
             this.loader.add(`res_${index}`, resource);
         });
+
+        this.loader.onProgress.add((loader, res) => {
+            // console.log(loader, res);
+        });
+
         this[MODEL] = new this.modelClass();
         this[VIEW] = new this.viewClass(loader, this.model);
     }

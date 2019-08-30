@@ -7,7 +7,7 @@
 import './view/css/normalize.css';
 import './view/css/style.css';
 import * as PIXI from 'pixi.js';
-import { scaleToWindow } from './utils/ScaleToWindow';
+// import { scaleToWindow } from './utils/ScaleToWindow';
 import { getWindowSize } from './utils/DeviceInfo';
 import Config from './config/Config';
 import App from './controller/App';
@@ -22,10 +22,11 @@ const stageW = Config.width;
 const stageWH = windowWH > Config.maxWH ? Config.maxWH : windowWH;
 const stageH = (Config.width / stageWH) >> 0;
 
-const app = new PIXI.Application({ width: stageW, height: stageH, backgroundColor: 0xccffff, antialias: true });
+const app = new PIXI.Application({ resizeTo: window, width: stageW,
+    height: stageH, backgroundColor: 0xccffff, antialias: true });
 
 document.body.appendChild(app.view);
-scaleToWindow(app.view);
+// scaleToWindow(app.view);
 
 const gameApp = App.getIns(app);
 

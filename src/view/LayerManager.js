@@ -7,22 +7,38 @@
 import { createLayer } from './Layer';
 import Utils from '../utils/Utils';
 
-let screenWidth = 0;
-let screenHeight = 0;
-
 const LAYER_MAP = new Map();
+const COMPONENT_MAP = new Map();
+
 let instance;
 
 class LayerManager {
     constructor(app, layers) {
-        screenWidth = app.screen.width;
-        screenHeight = app.screen.height;
+        this.app = app;
         layers.forEach((layerName) => {
             const layerIns = createLayer();
 
             LAYER_MAP.set(layerName, layerIns);
             app.stage.addChild(layerIns);
         });
+        this.resizeHandler = this.resize.bind(this);
+        window.addEventListener('resize', this.resizeHandler);
+    }
+
+    resize() {
+        COMPONENT_MAP.forEach(({ target, pos, layerContainer }) => {
+            if (pos) {
+                Utils.translatePosition(pos, target, layerContainer, this.stageWidth, this.stageHeight);
+            }
+        });
+    }
+
+    get stageWidth() {
+        return this.app.renderer.width;
+    }
+
+    get stageHeight() {
+        return this.app.renderer.height;
     }
 
     static getIns(app = null, layers = null) {
@@ -57,8 +73,11 @@ class LayerManager {
             throw new Error(`Layer ${layer} not exist!`);
         }
         if (pos) {
-            Utils.translatePosition(pos, target, layerContainer, screenWidth, screenHeight);
+            Utils.translatePosition(pos, target, layerContainer, this.stageWidth, this.stageHeight);
         }
+
+        COMPONENT_MAP.set(target, { target, pos, layerContainer });
+
         if (index !== undefined && index !== null) {
             layerContainer.addChildAt(target, index);
         }
@@ -75,6 +94,7 @@ class LayerManager {
         }
 
         layerContainer.removeChild(target);
+        COMPONENT_MAP.delete(target);
     }
 }
 

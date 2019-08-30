@@ -43,25 +43,25 @@ export default {
             if (defW !== 'auto') {
                 const percent = Number(defW.replace('%', ''));
 
-                objW = isNaN(percent) ? disObj.width : ((relWidth * percent / 100) >> 0);
+                objW = isNaN(percent) ? disObj.width : (relWidth * percent / 100);
             }
         }
         else if (typeof defW === 'number') {
             objW = defW;
         }
-        if (defH === null || defH === 'auto') objH = (objW / orgWH) >> 0;
+        if (defH === null || defH === 'auto') objH = objW / orgWH;
 
         if (defH && typeof defH === 'string') {
             if (defH !== 'auto') {
                 const percent = Number(defH.replace('%', ''));
 
-                objH = isNaN(percent) ? disObj.height : ((relHeight * percent / 100) >> 0);
+                objH = isNaN(percent) ? disObj.height : (relHeight * percent / 100);
             }
         }
         else if (typeof defH === 'number') {
             objH = defH;
         }
-        if (defW === null || defW === 'auto') objW = (objH * orgWH) >> 0;
+        if (defW === null || defW === 'auto') objW = objH * orgWH;
 
         disObj.width = objW;
         disObj.height = objH;
@@ -70,7 +70,7 @@ export default {
 
         switch (viewPos.alignX) {
             case ViewPostion.AlignTypes.center:
-                posOrg.x += (((relWidth - objW) / 2) >> 0);
+                posOrg.x += (relWidth - objW) / 2;
                 break;
             case ViewPostion.AlignTypes.right:
                 posOrg.x = (relWidth - objW) - posOrg.x;
@@ -81,7 +81,7 @@ export default {
 
         switch (viewPos.alignY) {
             case ViewPostion.AlignTypes.center:
-                posOrg.y += (((relHeight - objH) / 2) >> 0);
+                posOrg.y += (relHeight - objH) / 2;
                 break;
             case ViewPostion.AlignTypes.bottom:
                 posOrg.y = (relHeight - objH) - posOrg.y;
